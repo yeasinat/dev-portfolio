@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from "express";
+import express, { type ErrorRequestHandler, type Request, type Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -6,6 +6,7 @@ import { prisma } from "./lib/prisma";
 import authRouter from "./routers/auth.router";
 import userRouter from "./routers/user.router";
 import portfolioRouter from "./routers/portfolio.router";
+import { errorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
@@ -27,6 +28,8 @@ app.use("/api/v1/portfolio", portfolioRouter);
 app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to the Dev Portfolio API");
 });
+
+app.use(errorHandler as unknown as ErrorRequestHandler);
 
 app.listen(3000, async () => {
   await prisma.$connect();

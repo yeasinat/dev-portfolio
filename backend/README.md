@@ -1,33 +1,42 @@
 # API Documentation
 
-To install dependencies:
+## Overview
+
+This document provides an overview of the API endpoints available in the backend. Each endpoint is associated with a specific controller and handles various operations related to authentication, users, technologies, projects, and experiences.
+
+**To install dependencies:**
 
 ```bash
 bun install
 ```
 
-To run:
+**To run:**
 
 ```bash
-bun run index.ts
+bun dev
 ```
 
-## Overview
-
-This document provides an overview of the API endpoints available in the backend. Each endpoint is associated with a specific controller and handles various operations related to authentication, users, technologies, projects, and experiences.
 
 ## Endpoints
 
 ### Authentication
 
+- **Sign up as admin**
+
+To create an admin user run:
+
+```bash  
+bun create-admin
+```
+
 - **Sign In**
 
   - **URL:** `/api/auth/signin`
-  - **Method:** `POST`
+  - **Method :** `POST`
   - **Request Body:**
     - `email`: string
     - `password`: string
-  - **Response:** 200 OK with the user object and a token set in cookies.
+  - **Response:** 200 OK with the user object and a token set in `httpOnly` cookies.
 
   ### Users
 
