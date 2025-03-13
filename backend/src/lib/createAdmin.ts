@@ -2,6 +2,7 @@ import {
   DISABLE_ADMIN_SIGNUP,
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
+  ADMIN_NAME,
 } from "../config/env";
 import { prisma } from "./prisma";
 
@@ -20,13 +21,14 @@ async function createAdmin() {
     return;
   }
 
+  const name = ADMIN_NAME as string;
   const email = ADMIN_EMAIL as string;
   const password = ADMIN_PASSWORD as string;
   const hashedPassword = await Bun.password.hash(password);
 
   await prisma.user.create({
     data: {
-      name: "Md. Yeasin Arafat",
+      name,
       email,
       password: hashedPassword,
       role: "admin",
