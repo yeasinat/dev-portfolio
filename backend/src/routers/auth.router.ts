@@ -6,5 +6,4 @@ const authRouter = Router();
 authRouter.post("/signin", signin);
 authRouter.post("/refresh-token", refreshAccessToken);
 
-
 export default authRouter;
