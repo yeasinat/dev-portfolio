@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+@theme {
+  --font-doodle: "Rubik Doodle Shadow", cursive;
+  --font-fancy: "Eagle Lake", cursive;
+  --font-jetBrains: "JetBrains Mono", monospace;
+  --font-victor: "Victor Mono", monospace;
+  --font-poppins: "Poppins", sans-serif;
+
+  --color-text: #e5ebea;
+  --color-background: #070d0c;
+  --color-primary: #90d7c8;
+  --color-secondary: #208f77;
+  --color-accent: #32e9c1;
+}
