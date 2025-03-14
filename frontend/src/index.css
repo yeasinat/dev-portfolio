@@ -13,3 +13,8 @@
   --color-secondary: #208f77;
   --color-accent: #32e9c1;
 }
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
