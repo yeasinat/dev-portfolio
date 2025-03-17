@@ -63,6 +63,25 @@ export const signin = catchAsync(
   }
 );
 
+export const signout = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+    });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+    });
+
+    res.status(200).json({ message: "Successfully signed out" });
+  }
+);
+
 export const refreshAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { refreshToken } = req.cookies;
@@ -76,7 +95,7 @@ export const refreshAccessToken = catchAsync(
         refreshToken,
         JWT_SECRET as string
       ) as jwt.JwtPayload;
-      
+
       const newAccessToken = jwt.sign(
         { id: payload.id, email: payload.email },
         JWT_SECRET as string,

@@ -10,7 +10,7 @@ export const createProject = catchAsync(async (req: Request, res: Response) => {
   //   req.file ? JSON.stringify(req.file, null, 2) : "No file received"
   // );
 
-  const { title, description, liveLink, repoLink } = req.body;
+  const { title, description, liveLink, repoLink, technologiesUsed } = req.body;
   const imgUrl = req.file?.path || null;
   const imagePublicId = req.file?.filename || null;
 
@@ -22,6 +22,7 @@ export const createProject = catchAsync(async (req: Request, res: Response) => {
       repoLink,
       imgUrl,
       imagePublicId,
+      technologiesUsed,
       userId: req.user.id,
     },
   });
@@ -48,7 +49,7 @@ export const getProjectById = catchAsync(
 
 export const updateProject = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, description, liveLink, repoLink } = req.body;
+  const { title, description, liveLink, repoLink, technologiesUsed } = req.body;
   // console.log(id);
 
   const project = await prisma.project.findUnique({
@@ -59,7 +60,7 @@ export const updateProject = catchAsync(async (req: Request, res: Response) => {
     return res.status(404).json({ error: "Project not found" });
   }
 
-  let updatedData: any = { title, description, liveLink, repoLink };
+  let updatedData: any = { title, description, liveLink, repoLink, technologiesUsed };
 
   // console.log(req.file);
   if (req.file) {

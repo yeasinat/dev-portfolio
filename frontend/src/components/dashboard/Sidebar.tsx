@@ -1,9 +1,15 @@
-import { adminNavLinks } from "../../utils";
 import { Link, useLocation } from "react-router";
+import { HiArrowRightStartOnRectangle } from "react-icons/hi2";
+
+import { useAuth } from "../../context/authContext";
+import { adminNavLinks } from "../../utils";
+import SidebarProfile from "./SidebarProfile";
 
 const Sidebar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
+
+  const { logout } = useAuth();
 
   return (
     <nav className="border-secondary/30 fixed top-0 left-0 h-screen w-64 border-r p-4">
@@ -30,15 +36,15 @@ const Sidebar = () => {
         ))}
       </ul>
       <div className="border-secondary/30 absolute bottom-0 left-0 w-full border-t p-4">
-        <div className="text-accent flex items-center space-x-3">
-          <div className="bg-secondary flex h-8 w-8 items-center justify-center rounded-full">
-            <span className="text-sm font-bold">YA</span>
-          </div>
-          <div>
-            <p className="font-poppins text-sm">User Account</p>
-            <p className="text-accent/70 text-xs">Admin</p>
-          </div>
-        </div>
+        <SidebarProfile />
+
+        <button
+          onClick={logout}
+          className="font-jetBrains text-text hover:text-accent bg-secondary/5 hover:bg-secondary/20 flex w-full items-center justify-center rounded-md p-2 text-sm transition-colors duration-200"
+        >
+          <HiArrowRightStartOnRectangle className="mr-2 text-lg"/>
+          Logout
+        </button>
       </div>
     </nav>
   );

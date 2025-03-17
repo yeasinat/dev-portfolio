@@ -1,6 +1,5 @@
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router";
-
 import { useAuth } from "../../context/authContext";
 
 interface ProtectedRouteProps {
@@ -11,18 +10,20 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      // TODO add a toast notification later
-      console.error("Login is required to access this page!");
-    }
-  }, [isAuthenticated]);
-
   if (!isAuthenticated) {
-    <Navigate to="/login" state={{ from: location }} />;
+    // TODO add a toast notification
+    // Using Navigate component for declarative routing
+    return (
+      <Navigate
+        to="/dev-portfolio/login"
+        state={{ from: location.pathname }}
+        replace
+      />
+    );
   }
 
-  return children;
+  // Only render children if authenticated
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

@@ -1,5 +1,10 @@
 export const adminNavLinks = [
   {
+    name: "Overview",
+    path: "/dev-portfolio/dashboard/home",
+    icon: "",
+  },
+  {
     name: "Projects",
     path: "/dev-portfolio/dashboard/projects",
     icon: "",

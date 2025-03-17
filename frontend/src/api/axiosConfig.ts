@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router";
 import { VITE_API_URL } from "../config/env";
 
 const url = VITE_API_URL;
@@ -11,10 +10,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
     return config;
   },
   (error) => {
@@ -38,31 +33,19 @@ axiosInstance.interceptors.response.use(
     ) {
       originalRequest._retry = true;
 
-      const navigate = useNavigate();
-
       try {
         // Attempt to refresh the access token
-        const response = await axios.post(
+        await axios.post(
           `${url}/auth/refresh-token`,
           {},
           {
-            withCredentials: true, // Important for refresh token in cookies
+            withCredentials: true,
           },
         );
-
-        const newAccessToken = response.data.accessToken;
-        localStorage.setItem("accessToken", newAccessToken);
-
-        // Update the Authorization header and retry the original request
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         // Handle refresh token failure
         console.error("Refresh token failed:", refreshError);
-        localStorage.removeItem("accessToken");
-
-        // Redirect to login page when refresh token is expired
-        navigate("/login");
 
         return Promise.reject(refreshError);
       }
@@ -71,3 +54,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
+export default axiosInstance;

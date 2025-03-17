@@ -11,7 +11,7 @@ import {
 
 const userRouter = Router();
 
-userRouter.get("/", authorize, getUser);
+userRouter.get("/", getUser);
 userRouter
   .get("/:id", authorize, getUserById)
   .put("/:id", authorize, upload.single("image"), updateUserById)

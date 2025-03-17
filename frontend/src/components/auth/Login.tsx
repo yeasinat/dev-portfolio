@@ -1,9 +1,8 @@
-
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "../../context/authContext";
 
-
-
-// Create TypeScript type from schema
 type LoginFormData = {
   email: string;
   password: string;
@@ -15,34 +14,35 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      // Handle form submission logic
-      console.log("Form submitted:", data);
+  const loginMutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      console.log("Login successful, redirecting to dashboard");
+      navigate("/dev-portfolio/dashboard/home");
+    },
+    onError: (error: Error) => {
+      console.error("Login failed:", error.message);
+      // You could add toast notification here
+    },
+  });
 
-      // Simulating API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Handle successful login
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+  const onSubmit = (data: LoginFormData) => {
+    loginMutation.mutate(data);
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="border-accent/20 bg-background/80 w-full max-w-md rounded-lg border p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-2xl font-bold text-primary">
+        <h2 className="text-primary mb-6 text-center text-2xl font-bold">
           Sign In
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="mb-1 block font-medium text-text"
-            >
+            <label htmlFor="email" className="text-text mb-1 block font-medium">
               Email
             </label>
             <input
@@ -68,7 +68,7 @@ const Login = () => {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="mb-1 block font-medium text-text"
+              className="text-text mb-1 block font-medium"
             >
               Password
             </label>
@@ -101,11 +101,11 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="mt-4 text-center">
-          <a href="#" className="text-accent text-sm hover:text-primary">
+        {/* <div className="mt-4 text-center">
+          <a href="#" className="text-accent hover:text-primary text-sm">
             Forgot password?
           </a>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import axiosInstance from "../api/axiosConfig";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -6,11 +7,12 @@ interface AuthProviderProps {
 
 interface User {
   email: string;
+  token: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (token: string, userData: User) => void;
+  login: (userData: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -18,22 +20,30 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedUserData = localStorage.getItem("userData");
-    return savedUserData ? JSON.parse(savedUserData) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
 
-  const login = (token: string, userData: User) => {
-    // Store token and user data separately
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("userData", JSON.stringify(userData));
-    setUser(userData);
+  const login = async (userData: {
+    email: string;
+    password?: string;
+  }): Promise<void> => {
+    try {
+      const { data } = await axiosInstance.post("/auth/signin", userData, {
+        withCredentials: true,
+      });
+      setUser(data.user);
+    } catch (error) {
+      console.error("API error:", error); // TODO add a toast notification
+    }
+    return Promise.resolve();
   };
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userData");
-    setUser(null);
+  const logout = async () => {
+    try {
+      await axiosInstance.post("/auth/signout");
+      setUser(null);
+    } catch (error) {
+      console.error("API error:", error); // TODO add a toast notification
+    }
   };
 
   return (
