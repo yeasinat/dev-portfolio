@@ -40,7 +40,7 @@ export const updateProject = async ({
       },
     },
   );
-  console.log("API response:", data);
+//  console.log("API response:", data);
   return data;
 };
 

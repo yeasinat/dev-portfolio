@@ -8,3 +8,10 @@ export type ProjectProps = {
   repoLink: string;
   liveLink: string;
 };
+
+export type TechnologyProps = {
+  id: string;
+  name: string;
+  imgUrl?: string;
+  imgFile?: FileList;
+};

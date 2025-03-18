@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 
-//import { VITE_FRONTEND_URL } from "../../config/env";
 import ProjectForm from "./ProjectForm";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -14,7 +13,6 @@ import ProjectGrid from "./ProjectGrid";
 import { ProjectProps } from "../../types/types";
 
 const Project = () => {
-  // const url = VITE_FRONTEND_URL;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentProject, setCurrentProject] = useState<ProjectProps | null>(

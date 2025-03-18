@@ -2,16 +2,6 @@
 import { FiEdit2, FiExternalLink, FiGithub, FiTrash2 } from "react-icons/fi";
 import { ProjectProps } from "../../types/types";
 
-// type ProjectProps = {
-//   id: string;
-//   title: string;
-//   description: string;
-//   technologies: string[];
-//   imgUrl: string;
-//   repoLink: string;
-//   liveLink: string;
-// };
-
 interface ProjectGridProps {
   projects: ProjectProps[] | undefined;
   isLoading: boolean;
@@ -19,8 +9,6 @@ interface ProjectGridProps {
 
   onEdit: ( project: ProjectProps) => void;
   onDelete: (id: string) => void;
-
-
 }
 
 const ProjectGrid: React.FC<ProjectGridProps> = ({

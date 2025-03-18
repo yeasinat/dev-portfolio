@@ -64,7 +64,7 @@ export const updateProject = catchAsync(async (req: Request, res: Response) => {
 
   // console.log(req.file);
   if (req.file) {
-    if (project.imagePublicId) {
+    if (project.imagePublicId) {  
       await cloudinary.uploader.destroy(project.imagePublicId);
     }
     updatedData.imgUrl = req.file?.path;

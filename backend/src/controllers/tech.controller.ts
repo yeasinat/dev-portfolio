@@ -37,27 +37,27 @@ export const updateTech = catchAsync(async (req: Request, res: Response) => {
   const { name } = req.body;
 
   const tech = await prisma.technology.findUnique({
-    where: {id}
-  })
+    where: { id },
+  });
 
-  if(!tech){
-    return res.status(404).json({message:"Technology not found"})
+  if (!tech) {
+    return res.status(404).json({ message: "Technology not found" });
   }
 
-  const updatedData: any = { name };
-
-  const updatedTech = await prisma.technology.update({
-    where: { id },
-    data: updatedData,
-  });
+  let updatedData: any = { name };
 
   if (req.file) {
     if (tech.imagePublicId) {
       await cloudinary.uploader.destroy(tech.imagePublicId);
     }
-    tech.imgUrl = req.file?.path;
-    tech.imagePublicId = req.file?.filename;
+    updatedData.imgUrl = req.file?.path;
+    updatedData.imagePublicId = req.file?.filename;
   }
+
+  const updatedTech = await prisma.technology.update({
+    where: { id },
+    data: updatedData,
+  });
 
   return res.status(200).json(updatedTech);
 });
@@ -67,6 +67,5 @@ export const deleteTech = catchAsync(async (req: Request, res: Response) => {
   await prisma.technology.delete({
     where: { id },
   });
-
   return res.status(200).json({ message: "Technology deleted" });
 });
