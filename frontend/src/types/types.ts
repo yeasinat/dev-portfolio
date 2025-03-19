@@ -7,6 +7,7 @@ export type ProjectProps = {
   imgFile?: FileList;
   repoLink: string;
   liveLink: string;
+  createdAt?: Date | undefined;
 };
 
 export type TechnologyProps = {
