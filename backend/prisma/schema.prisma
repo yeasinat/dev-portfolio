@@ -52,6 +52,8 @@ model Experience {
   company     String
   position    String
   description String
+  startDate   DateTime?
+  endDate     DateTime?
   createdAt   DateTime @default(now())
   userId      String
   user        User     @relation(fields: [userId], references: [id])

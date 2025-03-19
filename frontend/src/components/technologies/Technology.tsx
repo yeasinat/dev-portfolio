@@ -63,18 +63,18 @@ const Technology = () => {
     if (isEditing && currentTech) {
       updateTechMutation.mutate({ id: currentTech.id, formData });
     } else {
-      createTechMutation.mutateAsync(formData);
+      createTechMutation.mutateAsync(formData as unknown as TechnologyProps);
     }
 
     setIsModalOpen(false);
   };
 
-  const handleTechEdit = async (formData: TechnologyProps) => {
+  const handleTechEdit = (formData: TechnologyProps) => {
     setCurrentTech(formData);
     setIsModalOpen(true);
     setIsEditing(true);
   };
-  const handleTechDelete = async (id: string) => {
+  const handleTechDelete = (id: string) => {
     deleteTechMutation.mutate(id);
   };
 
@@ -109,16 +109,16 @@ const Technology = () => {
       {/* Technology Form Modal*/}
 
       <TechnologyForm
-      isOpen={isModalOpen}
-      onClose={() => {
-        setIsModalOpen(false);
-        setCurrentTech(null);
-        setIsEditing(false);
-      }}
-      isEditing={isEditing}
-      technology={currentTech}
-      onSubmit={handleSubmitTech}
-      size='sm'
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setCurrentTech(null);
+          setIsEditing(false);
+        }}
+        isEditing={isEditing}
+        technology={currentTech}
+        onSubmit={handleSubmitTech}
+        size="sm"
       />
     </div>
   );

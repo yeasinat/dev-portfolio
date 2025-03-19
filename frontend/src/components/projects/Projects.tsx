@@ -85,7 +85,7 @@ const Project = () => {
       });
     } else {
       // For create operation
-      createProjectMutation.mutate(formData);
+      createProjectMutation.mutate(formData as unknown as ProjectProps);
     }
 
     setIsModalOpen(false);

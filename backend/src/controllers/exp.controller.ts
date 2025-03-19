@@ -4,9 +4,9 @@ import { catchAsync } from "../lib/catchAsync";
 
 export const createExperience = catchAsync(
   async (req: Request, res: Response) => {
-    const { company, position, description } = req.body;
+    const { position, company, description } = req.body;
     const experience = await prisma.experience.create({
-      data: { company, position, description, userId: req.user.id },
+      data: { position, company, description, userId: req.user.id },
     });
     return res.status(201).json(experience);
   }
@@ -32,10 +32,9 @@ export const getExperienceById = catchAsync(
 export const updateExperience = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { company, position, description } = req.body;
     const experience = await prisma.experience.update({
       where: { id },
-      data: { company, position, description },
+      data: req.body,
     });
     return res.status(200).json(experience);
   }

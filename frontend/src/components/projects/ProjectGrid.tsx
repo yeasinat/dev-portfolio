@@ -6,7 +6,6 @@ interface ProjectGridProps {
   projects: ProjectProps[] | undefined;
   isLoading: boolean;
   isError: boolean;
-
   onEdit: ( project: ProjectProps) => void;
   onDelete: (id: string) => void;
 }
