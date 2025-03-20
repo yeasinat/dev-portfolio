@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../../context/authContext";
+import { toast } from "react-toastify";
 
 type LoginFormData = {
   email: string;
@@ -20,11 +21,11 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      console.log("Login successful, redirecting to dashboard");
+      toast.success("Login successful");
       navigate("/dev-portfolio/dashboard/home");
     },
-    onError: (error: Error) => {
-      console.error("Login failed:", error.message);
+    onError: () => {
+      toast.error("Invalid credentials");
       // You could add toast notification here
     },
   });

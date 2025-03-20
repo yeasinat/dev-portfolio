@@ -11,8 +11,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    // TODO add a toast notification
-    // Using Navigate component for declarative routing
     return (
       <Navigate
         to="/dev-portfolio/login"

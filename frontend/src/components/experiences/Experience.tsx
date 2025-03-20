@@ -10,6 +10,7 @@ import { useState } from "react";
 import ExperienceList from "./ExperienceList";
 import ExperienceForm from "./ExperienceForm";
 import { ExperienceProps } from "../../types/types";
+import { toast } from "react-toastify";
 
 const Experience = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,8 +64,10 @@ const Experience = () => {
         id: currentExp.id,
         formData: formData as unknown as FormData,
       });
+      toast.success("Experience updated successfully");
     } else {
       createExpMutation.mutate(formData);
+      toast.success("Experience added successfully");
     }
 
     setIsModalOpen(false);
@@ -78,6 +81,7 @@ const Experience = () => {
 
   const handleDelete = (id: string) => {
     deleteExpMutation.mutate(id);
+    toast.success("Experience deleted successfully");
   };
 
   return (

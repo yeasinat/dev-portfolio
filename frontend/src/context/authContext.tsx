@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import axiosInstance from "../api/axiosConfig";
+import { toast } from "react-toastify";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
       setUser(data.user);
     } catch (error) {
-      console.error("API error:", error); // TODO add a toast notification
+      console.error("API error:", error);
     }
     return Promise.resolve();
   };
@@ -41,8 +42,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       await axiosInstance.post("/auth/signout");
       setUser(null);
+      toast.success("Logout successful");
     } catch (error) {
-      console.error("API error:", error); // TODO add a toast notification
+      console.error("API error:", error);
     }
   };
 

@@ -11,6 +11,7 @@ import {
 import { TechnologyProps } from "../../types/types";
 import TechnologyGrid from "./TechnologyGrid";
 import TechnologyForm from "./TechnologyForm";
+import { toast } from "react-toastify";
 
 const Technology = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,8 +63,10 @@ const Technology = () => {
   const handleSubmitTech = (formData: FormData) => {
     if (isEditing && currentTech) {
       updateTechMutation.mutate({ id: currentTech.id, formData });
+      toast.success("Technology updated successfully");
     } else {
       createTechMutation.mutateAsync(formData as unknown as TechnologyProps);
+      toast.success("Technology added successfully");
     }
 
     setIsModalOpen(false);
@@ -74,8 +77,10 @@ const Technology = () => {
     setIsModalOpen(true);
     setIsEditing(true);
   };
+
   const handleTechDelete = (id: string) => {
     deleteTechMutation.mutate(id);
+    toast.success("Technology deleted successfully");
   };
 
   return (

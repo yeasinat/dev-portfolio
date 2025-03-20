@@ -11,9 +11,9 @@ import {
 } from "../../api/projectApi";
 import ProjectGrid from "./ProjectGrid";
 import { ProjectProps } from "../../types/types";
+import { toast } from "react-toastify";
 
 const Project = () => {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentProject, setCurrentProject] = useState<ProjectProps | null>(
     null,
@@ -74,6 +74,7 @@ const Project = () => {
 
   const handleDeleteProject = (id: string) => {
     deleteProjectMutation.mutate(id);
+    toast.success("Project deleted successfully");
   };
 
   const handleSubmitProject = (formData: FormData) => {
@@ -83,9 +84,11 @@ const Project = () => {
         id: currentProject.id,
         formData,
       });
+      toast.success("Project updated successfully");
     } else {
       // For create operation
       createProjectMutation.mutate(formData as unknown as ProjectProps);
+      toast.success("Project created successfully");
     }
 
     setIsModalOpen(false);
