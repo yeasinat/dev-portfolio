@@ -14,7 +14,7 @@ const NotFound = () => {
       </div>
 
       <Link
-        to="/dev-portfolio"
+        to="/"
         className="text-text hover:bg-secondary border-secondary font-jetBrains sm:text-md mt-6 inline-flex items-center justify-center gap-2 rounded-full border px-3 py-1.5 text-xs transition-all duration-200 sm:gap-4 sm:px-4 sm:py-2"
       >
         <HiArrowLongLeft />

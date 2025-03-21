@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/toast.css";
 
 import "./index.css";
-import Hero from "./pages/Hero.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Dashboard from "./components/dashboard/Dashboard.tsx";
 import Project from "./components/projects/Projects.tsx";
@@ -17,19 +16,20 @@ import Login from "./components/auth/Login.tsx";
 import { AuthProvider } from "./context/authContext.tsx";
 import Overview from "./components/dashboard/Overview.tsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
+import Layout from "./pages/Layout.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/dev-portfolio/",
-    element: <Hero />,
+    path: "/",
+    element: <Layout />,
     errorElement: <NotFound />,
   },
   {
-    path: "/dev-portfolio/login",
+    path: "/login",
     element: <Login />,
   },
   {
-    path: "/dev-portfolio/dashboard",
+    path: "/dashboard",
 
     element: (
       <ProtectedRoute>
@@ -39,19 +39,19 @@ const router = createBrowserRouter([
 
     children: [
       {
-        path: "/dev-portfolio/dashboard/home",
+        path: "/dashboard/home",
         element: <Overview />,
       },
       {
-        path: "/dev-portfolio/dashboard/projects",
+        path: "/dashboard/projects",
         element: <Project />,
       },
       {
-        path: "/dev-portfolio/dashboard/technologies",
+        path: "/dashboard/technologies",
         element: <Technology />,
       },
       {
-        path: "/dev-portfolio/dashboard/experiences",
+        path: "/dashboard/experiences",
         element: <Experience />,
       },
     ],

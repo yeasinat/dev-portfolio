@@ -22,7 +22,7 @@ const Login = () => {
     mutationFn: login,
     onSuccess: () => {
       toast.success("Login successful");
-      navigate("/dev-portfolio/dashboard/home");
+      navigate("/dashboard/home");
     },
     onError: () => {
       toast.error("Invalid credentials");
