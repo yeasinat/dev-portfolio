@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/authContext.tsx";
 import Overview from "./components/dashboard/Overview.tsx";
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
 import Layout from "./pages/Layout.tsx";
+import DevDetails from "./components/dev/DevDetails.tsx";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +54,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/experiences",
         element: <Experience />,
+      },
+      {
+        path: "/dashboard/devdetails",
+        element: <DevDetails />,
       },
     ],
   },

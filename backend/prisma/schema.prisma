@@ -34,6 +34,7 @@ model Project {
   imgUrl      String?
   imagePublicId String?
   technologiesUsed String?
+  isFeatured Boolean @default(false)
   user        User     @relation(fields: [userId], references: [id])
 }
 

@@ -82,6 +82,30 @@ export const signout = catchAsync(
   }
 );
 
+export const getCurrentUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      include: {
+        projects: true,
+        technologies: true,
+        experiences: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const { password, ...userWithoutPassword } = user;
+    return res.status(200).json(userWithoutPassword);
+  }
+);
+
 export const refreshAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { refreshToken } = req.cookies;

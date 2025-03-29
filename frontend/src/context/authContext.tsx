@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import axiosInstance from "../api/axiosConfig";
 import { toast } from "react-toastify";
 
@@ -16,12 +22,45 @@ interface AuthContextType {
   login: (userData: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
+  authChecked: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const checkAuthStatus = async () => {
+    try {
+      setIsLoading(true);
+      console.log("Checking auth status...");
+
+      const { data } = await axiosInstance.get("/auth/me", {
+        withCredentials: true,
+      });
+
+      console.log("Auth status response:", data);
+
+      if (data && data.user) {
+        setUser(data.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.log("Authentication check failed:", error);
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+      setAuthChecked(true);
+    }
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
 
   const login = async (userData: {
     email: string;
@@ -50,7 +89,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, isAuthenticated: !!user }}
+      value={{
+        user,
+        login,
+        logout,
+        isAuthenticated: !!user,
+        isLoading,
+        authChecked,
+      }}
     >
       {children}
     </AuthContext.Provider>

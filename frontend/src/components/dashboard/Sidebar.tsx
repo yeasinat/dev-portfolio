@@ -2,8 +2,8 @@ import { Link, useLocation } from "react-router";
 import { HiArrowRightStartOnRectangle } from "react-icons/hi2";
 
 import { useAuth } from "../../context/authContext";
-import { adminNavLinks } from "../../utils";
 import SidebarProfile from "./SidebarProfile";
+import { adminNavLinks } from "../../constants";
 
 const Sidebar = () => {
   const location = useLocation();
