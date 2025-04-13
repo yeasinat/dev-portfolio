@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VITE_API_URL } from "../config/env";
+import { VITE_API_URL } from "./env";
 
 const url = VITE_API_URL;
 

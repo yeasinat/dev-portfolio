@@ -1,4 +1,4 @@
-import axios from "./axiosConfig";
+import axios from "../config/axiosConfig";
 
 interface LoginData {
   email: string;
@@ -15,7 +15,7 @@ interface LoginResponse {
 export const signin = async (data: LoginData): Promise<LoginResponse> => {
   try {
     const response = await axios.post("/auth/signin", data);
-    console.log(response.data)
+    console.log(response.data);
 
     if (response.data.token) {
       return response.data;

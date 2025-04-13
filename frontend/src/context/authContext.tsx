@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import axiosInstance from "../api/axiosConfig";
+import axiosInstance from "../config/axiosConfig";
 import { toast } from "react-toastify";
 
 interface AuthProviderProps {

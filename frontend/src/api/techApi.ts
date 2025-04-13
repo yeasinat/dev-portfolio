@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from "../config/axiosConfig";
 import { VITE_API_URL } from "../config/env";
 import { TechnologyProps } from "../types/types";
 
