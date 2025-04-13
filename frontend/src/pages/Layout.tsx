@@ -1,5 +1,5 @@
-
 import Navbar from "../components/ui/Navbar";
+import Hero from "./Hero";
 //import Projects from "./Projects";
 // import Skills from "./Skills";
 // import Experience from "./Experience";
@@ -59,6 +59,10 @@ const Layout = () => {
         <RightOverlay />
       </aside> */}
       <Navbar />
+
+      <div>
+        <Hero />
+      </div>
     </section>
   );
 };
