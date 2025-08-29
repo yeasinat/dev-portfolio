@@ -7,6 +7,7 @@ import {
 } from "react";
 import axiosInstance from "../config/axiosConfig";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -36,22 +37,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const checkAuthStatus = async () => {
     try {
       setIsLoading(true);
-      console.log("Checking auth status...");
-
       const { data } = await axiosInstance.get("/auth/me", {
         withCredentials: true,
       });
 
-      console.log("Auth status response:", data);
 
       if (data && data.user) {
         setUser(data.user);
+        return true;
       } else {
         setUser(null);
+        return false;
       }
     } catch (error) {
-      console.log("Authentication check failed:", error);
+      if (axios.isAxiosError(error)) {
+        console.error(
+          "Auth check failed:",
+          error.response?.data || error.message,
+        );
+      } else {
+        console.error("Unexpected error:", error);
+      }
       setUser(null);
+      return false;
     } finally {
       setIsLoading(false);
       setAuthChecked(true);
@@ -62,19 +70,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     checkAuthStatus();
   }, []);
 
-  const login = async (userData: {
-    email: string;
-    password?: string;
-  }): Promise<void> => {
-    try {
-      const { data } = await axiosInstance.post("/auth/signin", userData, {
-        withCredentials: true,
-      });
-      setUser(data.user);
-    } catch (error) {
-      console.error("API error:", error);
+  const login = async (userData: { email: string; password?: string }) => {
+    const { data } = await axiosInstance.post("/auth/signin", userData, {
+      withCredentials: true,
+    });
+
+    if (data.success !== true) {
+      throw new Error(data.message || "Invalid credentials");
     }
-    return Promise.resolve();
+
+    setUser(data?.user);
   };
 
   const logout = async () => {

@@ -26,7 +26,6 @@ const Login = () => {
     },
     onError: () => {
       toast.error("Invalid credentials");
-      // You could add toast notification here
     },
   });
 
