@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 import { Navigate } from "react-router";
 import { useAuth } from "../../context/authContext";
 
@@ -7,22 +7,9 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const { isLoading, authChecked, user } = useAuth();
 
-  useEffect(() => {
-    // Only redirect if not loading and not authenticated
-    if (!isLoading && !isAuthenticated) {
-      // Small delay to ensure auth check is really complete
-      const timer = setTimeout(() => {
-        setShouldRedirect(true);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading, isAuthenticated]);
-
-  if (isLoading) {
+  if (isLoading || !authChecked) {
     return (
       <div className="flex h-screen items-center justify-center">
         <div className="h-16 w-16 animate-spin rounded-full border-t-2 border-b-2 border-blue-500"></div>
@@ -30,7 +17,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  if (shouldRedirect) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 
