@@ -6,7 +6,7 @@ import { prisma } from "../lib/prisma";
 import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
 
 export const signin = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const user = await prisma.user.findUnique({
@@ -19,7 +19,9 @@ export const signin = catchAsync(
     const isPasswordValid = await Bun.password.verify(password, user.password);
 
     if (!isPasswordValid)
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid email or password" });
 
     const expiresIn =
       typeof JWT_EXPIRES_IN === "number" ? JWT_EXPIRES_IN : 3600; // Default to 1 hour if undefined
@@ -50,13 +52,14 @@ export const signin = catchAsync(
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false, // TODO: Use secure cookies in production
-      sameSite: "lax",
+      sameSite: "lax", // TODO: it should be set on development
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     });
 
     //  console.log("Set-Cookie Header:", res.getHeaders()["set-cookie"]);
 
     res.status(200).json({
+      success: true,
       user,
       accessToken: token,
     });
@@ -78,12 +81,12 @@ export const signout = catchAsync(
       path: "/",
     });
 
-    res.status(200).json({ message: "Successfully signed out" });
+    res.status(200).json({ success: true, message: "Successfully signed out" });
   }
 );
 
 export const getCurrentUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     if (!req.user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -102,7 +105,7 @@ export const getCurrentUser = catchAsync(
     }
 
     const { password, ...userWithoutPassword } = user;
-    return res.status(200).json(userWithoutPassword);
+    return res.status(200).json({ success: true, user: userWithoutPassword });
   }
 );
 
