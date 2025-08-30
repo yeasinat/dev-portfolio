@@ -4,7 +4,7 @@ import { VITE_API_URL } from "../config/env";
 
 export const fetchUser = async () => {
   try {
-    const {data} = await axiosInstance.get(`${VITE_API_URL}/users`);
+    const { data } = await axiosInstance.get(`${VITE_API_URL}/users`);
     return data?.user;
   } catch (error) {
     console.error("fetchUser error:", error);

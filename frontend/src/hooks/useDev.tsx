@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchUser, updateUser } from "../api/userApi";
 
-export const useDev = () => {
+const useDev = () => {
   const {
     data: devData,
     isError: devDataError,
@@ -14,13 +14,15 @@ export const useDev = () => {
   return { devData, devDataError, devDataLoading };
 };
 
-export const useUpdateUser = () => {
+const useUpdateUser = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: FormData) => updateUser(data),
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["devDetails"] });
     },
   });
 };
+
+export { useDev, useUpdateUser };
