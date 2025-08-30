@@ -5,16 +5,18 @@ import { upload } from "../middlewares/upload.middleware";
 import {
   getUser,
   getUserById,
-  updateUserById,
+  updateUser,
   deleteUserById,
 } from "../controllers/user.controller";
 
 const userRouter = Router();
 
-userRouter.get("/", getUser);
+userRouter
+  .get("/", getUser)
+  .patch("/", authorize, upload.single("image"), updateUser);
+  
 userRouter
   .get("/:id", authorize, getUserById)
-  .put("/:id", authorize, upload.single("image"), updateUserById)
   .delete("/:id", authorize, deleteUserById);
 
 export default userRouter;
