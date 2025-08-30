@@ -262,7 +262,7 @@ const Overview = () => {
                 No projects found. Get started by adding your first project.
               </p>
               <Link
-                to="/dev-portfolio/dashboard/projects"
+                to="/dashboard/projects"
                 className="bg-secondary font-poppins text-text hover:bg-secondary/80 mt-4 inline-block rounded-md px-4 py-2 text-sm transition-colors"
               >
                 Add Project
@@ -291,7 +291,7 @@ const Overview = () => {
       {/* Action Button */}
       <div className="text-center">
         <Link
-          to="/dev-portfolio/dashboard/projects"
+          to="/dashboard/projects"
           className="bg-secondary font-poppins text-text hover:bg-secondary/80 rounded-md px-6 py-3 text-sm font-medium transition-colors duration-300"
         >
           Add New Project

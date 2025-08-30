@@ -4,24 +4,18 @@ import { VITE_API_URL } from "../config/env";
 
 export const fetchUser = async () => {
   try {
-    const response = await axiosInstance.get(`${VITE_API_URL}/users`);
-    return response.data;
+    const {data} = await axiosInstance.get(`${VITE_API_URL}/users`);
+    return data?.user;
   } catch (error) {
     console.error("fetchUser error:", error);
     return null;
   }
 };
 
-export const updateUser = async ({
-  id,
-  formData,
-}: {
-  id: string;
-  formData: FormData;
-}) => {
+export const updateUser = async (formData: FormData) => {
   try {
-    const { data } = await axiosInstance.put(
-      `${VITE_API_URL}/users/${id}`,
+    const { data } = await axiosInstance.patch(
+      `${VITE_API_URL}/users`,
       formData,
       {
         headers: {
