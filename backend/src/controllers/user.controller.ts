@@ -13,7 +13,14 @@ export const getUser = catchAsync(async (req: Request, res: Response) => {
     },
   });
   const { password, ...userWithoutPassword } = user[0];
-  return res.status(200).json(userWithoutPassword);
+
+  if (userWithoutPassword.socialLinks) {
+    userWithoutPassword.socialLinks = JSON.parse(
+      userWithoutPassword.socialLinks as string
+    );
+  }
+
+  return res.status(200).json({ success: true, user: userWithoutPassword });
 });
 
 export const getUserById = catchAsync(async (req: Request, res: Response) => {
@@ -32,42 +39,49 @@ export const getUserById = catchAsync(async (req: Request, res: Response) => {
   }
 
   const { password, ...userWithoutPassword } = user;
-  return res.status(200).json(userWithoutPassword);
+
+  if (userWithoutPassword.socialLinks) {
+    userWithoutPassword.socialLinks = JSON.parse(
+      userWithoutPassword.socialLinks as string
+    );
+  }
+
+  return res.status(200).json({ success: true, user: userWithoutPassword });
 });
 
-export const updateUserById = catchAsync(
-  async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { name, email, bio, socialLinks } = req.body;
+export const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const { name, email, bio, socialLinks } = req.body;
 
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
+  const user = await prisma.user.findFirst();
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const updatedData: any = { name, email, bio, socialLinks };
-
-    if (req.file) {
-      if (user.imagePublicId) {
-        await cloudinary.uploader.destroy(user.imagePublicId);
-      }
-      updatedData.imageUrl = req.file?.path;
-      updatedData.imagePublicId = req.file?.filename;
-    }
-
-    const updatedUser = await prisma.user.update({
-      where: { id },
-      data: updatedData,
-    });
-
-    const { password, ...userWithoutPassword } = updatedUser;
-
-    return res.status(200).json(userWithoutPassword);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
   }
-);
+
+  const updatedData: any = { name, email, bio, socialLinks };
+
+  if (req.file) {
+    if (user.imagePublicId) {
+      await cloudinary.uploader.destroy(user.imagePublicId);
+    }
+    updatedData.imageUrl = req.file?.path;
+    updatedData.imagePublicId = req.file?.filename;
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: user.id },
+    data: updatedData,
+  });
+
+  const { password, ...userWithoutPassword } = updatedUser;
+  if (userWithoutPassword.socialLinks) {
+    userWithoutPassword.socialLinks = JSON.parse(
+      userWithoutPassword.socialLinks as string
+    );
+  }
+
+  return res.status(200).json(userWithoutPassword);
+});
 
 // TODO: Later remove this controller
 export const deleteUserById = catchAsync(
