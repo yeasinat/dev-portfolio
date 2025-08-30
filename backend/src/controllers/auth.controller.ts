@@ -105,6 +105,13 @@ export const getCurrentUser = catchAsync(
     }
 
     const { password, ...userWithoutPassword } = user;
+
+    if (userWithoutPassword.socialLinks) {
+      userWithoutPassword.socialLinks = JSON.parse(
+        userWithoutPassword.socialLinks as string
+      );
+    }
+
     return res.status(200).json({ success: true, user: userWithoutPassword });
   }
 );
