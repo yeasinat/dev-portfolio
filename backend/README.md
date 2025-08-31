@@ -17,6 +17,12 @@ bun dev
 ```
 
 
+## Create a user in production
+```javascript
+bun run seed // to create developer in db
+npx prisma migrate deploy && npx prisma db seed
+```
+
 ## Endpoints
 
 ### Authentication
