@@ -6,7 +6,8 @@
     "build": "NODE_ENV=production bun run --compile src/index.ts",
     "studio": "NODE_ENV=development prisma studio",
     "create-admin": "NODE_ENV=development bun run src/lib/createAdmin.ts",
-    "test-cloudinary": "NODE_ENV=development bun run src/config/test.cloudinary.ts"
+    "test-cloudinary": "NODE_ENV=development bun run src/config/test.cloudinary.ts",
+    "seed": "NODE_ENV=production bun run src/config/seed.ts"
   },
   "type": "module",
   "devDependencies": {
