@@ -1,52 +1,46 @@
 import type { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import { catchAsync } from "../lib/catchAsync";
 import { prisma } from "../lib/prisma";
-import { JWT_EXPIRES_IN, JWT_SECRET } from "../config/env";
+import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../lib/jwt";
+import type { SignInBody } from "../schemas/auth";
+
+// Custom typed request interface
+interface SignInRequest extends Request {
+  body: SignInBody;
+}
 
 export const signin = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: SignInRequest, res: Response) => {
     const { email, password } = req.body;
 
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
-    if (!user)
-      return res.status(401).json({ message: "Invalid email or password" });
+    if (!user) {
+      res.status(401).json({ message: "Invalid email or password" });
+      return;
+    }
 
     const isPasswordValid = await Bun.password.verify(password, user.password);
 
-    if (!isPasswordValid)
-      return res
+    if (!isPasswordValid) {
+      res
         .status(401)
         .json({ success: false, message: "Invalid email or password" });
+      return;
+    }
 
-    const expiresIn =
-      typeof JWT_EXPIRES_IN === "number" ? JWT_EXPIRES_IN : 3600; // Default to 1 hour if undefined
+    const token = signAccessToken({ id: user.id, email: user.email });
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email },
-      JWT_SECRET as string,
-      {
-        expiresIn,
-      }
-    );
-
-    const refreshToken = jwt.sign(
-      { id: user.id, email: user.email },
-      JWT_SECRET as string,
-      {
-        expiresIn: "7d", // Refresh token valid for 7 days
-      }
-    );
+    const refreshToken = signRefreshToken({ id: user.id, email: user.email });
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: false, // TODO: Use secure cookies in production
       sameSite: "lax",
-      maxAge: expiresIn * 1000, // Convert to milliseconds
+      maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
     });
 
     res.cookie("refreshToken", refreshToken, {
@@ -88,7 +82,8 @@ export const signout = catchAsync(
 export const getCurrentUser = catchAsync(
   async (req: Request, res: Response) => {
     if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
+      res.status(401).json({ message: "Unauthorized" });
+      return;
     }
 
     const user = await prisma.user.findUnique({
@@ -101,7 +96,8 @@ export const getCurrentUser = catchAsync(
     });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      res.status(404).json({ message: "User not found" });
+      return;
     }
 
     const { password, ...userWithoutPassword } = user;
@@ -112,7 +108,7 @@ export const getCurrentUser = catchAsync(
       );
     }
 
-    return res.status(200).json({ success: true, user: userWithoutPassword });
+    res.status(200).json({ success: true, user: userWithoutPassword });
   }
 );
 
@@ -125,18 +121,8 @@ export const refreshAccessToken = catchAsync(
     }
 
     try {
-      const payload = jwt.verify(
-        refreshToken,
-        JWT_SECRET as string
-      ) as jwt.JwtPayload;
-
-      const newAccessToken = jwt.sign(
-        { id: payload.id, email: payload.email },
-        JWT_SECRET as string,
-        {
-          expiresIn: typeof JWT_EXPIRES_IN === "number" ? JWT_EXPIRES_IN : 3600,
-        }
-      );
+      const payload = verifyRefreshToken(refreshToken)
+      const newAccessToken = signAccessToken({id: payload.id, email: payload.email})
 
       res.status(200).json({ accessToken: newAccessToken });
     } catch (error) {

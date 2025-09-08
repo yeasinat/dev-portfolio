@@ -1,9 +1,8 @@
-import jwt, { type JwtPayload } from "jsonwebtoken";
 import { type NextFunction, type Request, type Response } from "express";
 
 import { catchAsync } from "../lib/catchAsync";
-import { JWT_SECRET } from "../config/env";
 import { prisma } from "../lib/prisma";
+import { verifyAccessToken } from "../lib/jwt";
 
 export const authorize = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +11,8 @@ export const authorize = catchAsync(
 
     if (!token) return res.status(401).json({ message: "Unauthorized" });
 
-    const decoded = jwt.verify(token, JWT_SECRET as jwt.Secret) as JwtPayload;
+    const decoded = verifyAccessToken(token);
+
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
     });
