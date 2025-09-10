@@ -5,7 +5,7 @@ import type {
   Response,
 } from "express";
 
-import { NODE_ENV } from "../config/env";
+import { env } from "../config/env";
 import type AppError from "../lib/appError";
 
 // TODO make better error handler later
@@ -15,10 +15,10 @@ export const errorHandler= (
   res: Response,
   next: NextFunction
 ) => {
-  const env = NODE_ENV || "development";
+  const devEnv = env.NODE_ENV || "development";
   const statusCode = err.statusCode || 500;
   
-  if (env === "development") {
+  if (devEnv === "development") {
     console.error("❌ ERROR:", err);
     return res.status(statusCode).json({
       success: false,
