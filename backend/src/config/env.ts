@@ -17,7 +17,7 @@ const envSchema = z.object({
   DEV_EMAIL: z.email(),
   DEV_PASSWORD: z.string().min(6),
 
-  DISABLE_ADMIN_SIGNUP: z.string().transform((v) => v === "true"),
+  DISABLE_ADMIN_SIGNUP: z.string().optional(),
 
   CLOUDINARY_CLOUD_NAME: z.string().min(1),
   CLOUDINARY_API_KEY: z.string().min(1),
