@@ -1,69 +1,72 @@
 import Navbar from "../components/ui/Navbar";
+import About from "./About";
 import Hero from "./Hero";
+import ProjectsPage from "./Projects";
+import Technologies from "./Technologies";
 //import Projects from "./Projects";
 // import Skills from "./Skills";
 // import Experience from "./Experience";
 // import Contact from "./Contact";
 
 const Layout = () => {
-  // const [activeSection, setActiveSection] = useState(0);
-  // const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
-
-  // // Setup sections array for easy mapping
-  // const sections = [
-  //   { id: "hero", component: <Hero /> },
-  //   { id: "about", component: <About /> },
-  //   // { id: "projects", component: <Projects /> },
-  //   // { id: "skills", component: <Skills /> },
-  //   // { id: "experience", component: <Experience /> },
-  //   // { id: "contact", component: <Contact /> }
-  // ];
-
-  // Setup intersection observer to track active section
-  // useEffect(() => {
-  //   const options = {
-  //     root: null,
-  //     rootMargin: "0px",
-  //     threshold: 0.5,
-  //   };
-
-  //   const observer = new IntersectionObserver((entries) => {
-  //     entries.forEach((entry) => {
-  //       if (entry.isIntersecting) {
-  //         const index = sectionsRef.current.findIndex(
-  //           (ref) => ref === entry.target,
-  //         );
-  //         setActiveSection(index);
-  //       }
-  //     });
-  //   }, options);
-
-  //   // Observe all section elements
-  //   sectionsRef.current.forEach((section) => {
-  //     if (section) observer.observe(section);
-  //   });
-
-  //   return () => {
-  //     sectionsRef.current.forEach((section) => {
-  //       if (section) observer.unobserve(section);
-  //     });
-  //   };
-  // }, []);
-
   return (
-    <section className="">
-      {/* <aside className="hidden md:block">
-        <LeftOverlay />
-      </aside>
-      <aside className="hidden md:block">
-        <RightOverlay />
-      </aside> */}
+    <div className="relative">
+      {/* Background effects */}
+      <div className="fixed inset-0 -z-20">
+        <div className="bg-accent/5 absolute top-0 left-1/4 h-96 w-96 rounded-full blur-3xl"></div>
+        <div className="bg-primary/5 absolute right-1/3 bottom-1/3 h-64 w-64 rounded-full blur-2xl"></div>
+        <div className="bg-secondary/3 absolute top-1/2 left-1/2 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"></div>
+      </div>
+
       <Navbar />
 
-      <div>
-        <Hero />
+      {/* Main content sections */}
+      <main className="relative">
+        <section id="hero" className="min-h-screen">
+          <Hero />
+        </section>
+
+        <section id="about" className="min-h-screen">
+          <About />
+        </section>
+
+        <section id="technology" className="min-h-screen">
+          <Technologies />
+        </section>
+
+        <section id="projects" className="min-h-screen">
+          <ProjectsPage />
+        </section>
+        {/* Add more sections as you build them */}
+        {/* 
+        
+        <section id="skills" className="min-h-screen">
+          <Skills />
+        </section>
+        
+        <section id="experience" className="min-h-screen">
+          <Experience />
+        </section>
+        
+        <section id="contact" className="min-h-screen">
+          <Contact />
+        </section>
+        */}
+      </main>
+
+      {/* Scroll indicator */}
+      <div className="fixed right-8 bottom-8 z-50">
+        <div className="flex flex-col items-center space-y-2">
+          <div className="bg-accent/30 relative h-16 w-1 overflow-hidden rounded-full">
+            <div
+              className="bg-accent w-full animate-pulse rounded-full"
+              style={{ height: "25%" }}
+            ></div>
+          </div>
+          <span className="text-accent font-victor text-xs">Scroll</span>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -17,6 +17,56 @@
 body {
   background-color: var(--color-background);
   color: var(--color-text);
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-accent);
+  }
+  50% {
+    box-shadow:
+      0 0 40px var(--color-accent),
+      0 0 60px var(--color-primary);
+  }
 }
 
 @layer components {
@@ -27,7 +77,83 @@ body {
     );
     background-size: 20px 20px;
   }
+
+  .animate-fade-in {
+    animation: fade-in 1s ease-out;
+  }
+
+  .animate-gradient {
+    background: linear-gradient(
+      -45deg,
+      var(--color-accent),
+      var(--color-primary),
+      var(--color-secondary),
+      var(--color-accent)
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 4s ease infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+  }
+
+  /* Hover effects */
+  .hover-lift {
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(50, 233, 193, 0.3);
+  }
+
+  /* Custom button styles */
+  .btn-primary {
+    @apply from-accent to-primary text-background hover:shadow-accent/50 rounded-lg bg-gradient-to-r px-6 py-3 font-semibold transition-all duration-300 hover:scale-105 hover:shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border-accent text-accent hover:bg-accent hover:text-background rounded-lg border-2 px-6 py-3 transition-all duration-300;
+  }
+
+  /* Text truncation utilities */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
