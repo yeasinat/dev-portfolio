@@ -152,6 +152,90 @@ html {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
   }
+
+  /* Vertical Timeline Custom Styles */
+  .vertical-timeline::before {
+    background: linear-gradient(
+      to bottom,
+      var(--color-accent),
+      var(--color-primary),
+      var(--color-secondary)
+    ) !important;
+    width: 4px !important;
+    left: 50% !important;
+    margin-left: -2px !important;
+  }
+
+  .vertical-timeline-element-content {
+    position: relative !important;
+    margin: 1.5em 0 !important;
+  }
+
+  .vertical-timeline-element-content:hover {
+    transform: translateY(-2px) !important;
+    transition: transform 0.3s ease !important;
+  }
+
+  .vertical-timeline-element-date {
+    color: var(--color-accent) !important;
+    font-family: var(--font-victor) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Left side elements */
+  .vertical-timeline-element:nth-child(odd) .vertical-timeline-element-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Right side elements */
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-content {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Enhanced hover effects for alternating timeline */
+  .vertical-timeline-element:nth-child(odd)
+    .vertical-timeline-element-content:hover {
+    transform: translateY(-2px) translateX(5px) !important;
+  }
+
+  .vertical-timeline-element:nth-child(even)
+    .vertical-timeline-element-content:hover {
+    transform: translateY(-2px) translateX(-5px) !important;
+  }
+
+  /* Mobile responsiveness */
+  @media only screen and (max-width: 1169px) {
+    .vertical-timeline::before {
+      left: 40px !important;
+      margin-left: -2px !important;
+    }
+
+    .vertical-timeline-element-date {
+      color: var(--color-accent) !important;
+      background: var(--color-background) !important;
+      padding: 8px 16px !important;
+      border-radius: 8px !important;
+      border: 1px solid var(--color-primary) !important;
+      display: inline-block !important;
+      margin-bottom: 8px !important;
+    }
+
+    .vertical-timeline-element-content {
+      margin-left: 80px !important;
+      margin-right: 0 !important;
+    }
+
+    .vertical-timeline-element:nth-child(odd)
+      .vertical-timeline-element-content:hover,
+    .vertical-timeline-element:nth-child(even)
+      .vertical-timeline-element-content:hover {
+      transform: translateY(-2px) translateX(5px) !important;
+    }
+  }
 }
 
 .scrollbar-hide {

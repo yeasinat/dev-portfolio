@@ -1,5 +1,6 @@
 import Navbar from "../components/ui/Navbar";
 import About from "./About";
+import ExperiencesPage from "./Experiences";
 import Hero from "./Hero";
 import ProjectsPage from "./Projects";
 import Technologies from "./Technologies";
@@ -30,6 +31,10 @@ const Layout = () => {
           <About />
         </section>
 
+        <section id="experience" className="min-h-screen">
+          <ExperiencesPage />
+        </section>
+
         <section id="technology" className="min-h-screen">
           <Technologies />
         </section>
@@ -44,9 +49,6 @@ const Layout = () => {
           <Skills />
         </section>
         
-        <section id="experience" className="min-h-screen">
-          <Experience />
-        </section>
         
         <section id="contact" className="min-h-screen">
           <Contact />
