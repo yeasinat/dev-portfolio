@@ -13,6 +13,14 @@ const envSchema = z.object({
     z.number(),
   ]),
 
+  PORT: z
+    .string()
+    .default("3000") // optional: fallback for local dev
+    .transform((val) => Number(val))
+    .refine((val) => Number.isInteger(val) && val > 0 && val <= 65535, {
+      message: "PORT must be a valid TCP port number (1–65535)",
+    }),
+
   DEV_NAME: z.string().min(1),
   DEV_EMAIL: z.email(),
   DEV_PASSWORD: z.string().min(6),

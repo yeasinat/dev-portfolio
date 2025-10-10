@@ -1,4 +1,8 @@
-import express, { type ErrorRequestHandler, type Request, type Response } from "express";
+import express, {
+  type ErrorRequestHandler,
+  type Request,
+  type Response,
+} from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -7,6 +11,7 @@ import authRouter from "./routers/auth.router";
 import userRouter from "./routers/user.router";
 import portfolioRouter from "./routers/portfolio.router";
 import { errorHandler } from "./middlewares/error.middleware";
+import { env } from "./config/env";
 
 const app = express();
 
@@ -31,9 +36,10 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use(errorHandler as unknown as ErrorRequestHandler);
 
-app.listen(3000, async () => {
+const port = env.PORT;
+
+app.listen(port, async () => {
   await prisma.$connect();
   console.log("Database connected");
-  console.log("Server is running on port 3000");
+  console.log(`Server is running on port ${port}`);
 });
-
