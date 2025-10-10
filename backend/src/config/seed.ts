@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { DEV_EMAIL, DEV_NAME, DEV_PASSWORD } from "./env";
+import { env } from "./env";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -12,15 +12,15 @@ async function main() {
   });
 
   if (!existingUser) {
-    const hashedPassword = await Bun.password.hash(DEV_PASSWORD as string, {
+    const hashedPassword = await Bun.password.hash(env.DEV_PASSWORD, {
       algorithm: "bcrypt",
       cost: 10,
     });
 
     await prisma.user.create({
       data: {
-        name: DEV_NAME as string,
-        email: DEV_EMAIL as string,
+        name: env.DEV_NAME,
+        email: env.DEV_EMAIL,
         password: hashedPassword,
       },
     });

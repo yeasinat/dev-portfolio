@@ -1,14 +1,7 @@
-import {
-  DISABLE_ADMIN_SIGNUP,
-  DEV_EMAIL,
-  DEV_PASSWORD,
-  DEV_NAME,
-} from "../config/env";
+import { env } from "../config/env";
 import { prisma } from "./prisma";
 
 async function createAdmin() {
-  if (DISABLE_ADMIN_SIGNUP === "true") return;
-
   // TODO before going to production delete this line
   await prisma.user.deleteMany();
 
@@ -22,9 +15,9 @@ async function createAdmin() {
     return;
   }
 
-  const name = DEV_NAME as string;
-  const email = DEV_EMAIL as string;
-  const password = DEV_PASSWORD as string;
+  const name = env.DEV_NAME;
+  const email = env.DEV_EMAIL;
+  const password = env.DEV_PASSWORD;
   const hashedPassword = await Bun.password.hash(password);
 
   await prisma.user.create({
@@ -32,7 +25,6 @@ async function createAdmin() {
       name,
       email,
       password: hashedPassword,
-      role: "admin",
     },
   });
 
