@@ -6,6 +6,7 @@ async function createAdmin() {
   await prisma.user.deleteMany();
 
   // TODO need correction in this logic the role does not exists
+  // TODO need correction in this logic the role does not exists
   const existingAdmin = await prisma.user.findFirst({
     where: { role: "admin" },
   });

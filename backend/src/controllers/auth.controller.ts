@@ -47,12 +47,14 @@ export const signin = catchAsync(
       httpOnly: true,
       secure: false, // TODO: Use secure cookies in production
       sameSite: "lax", // TODO: it should be set on development
+      sameSite: "lax", // TODO: it should be set on development
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     });
 
     //  console.log("Set-Cookie Header:", res.getHeaders()["set-cookie"]);
 
     res.status(200).json({
+      success: true,
       success: true,
       user,
       accessToken: token,
@@ -76,10 +78,12 @@ export const signout = catchAsync(
     });
 
     res.status(200).json({ success: true, message: "Successfully signed out" });
+    res.status(200).json({ success: true, message: "Successfully signed out" });
   }
 );
 
 export const getCurrentUser = catchAsync(
+  async (req: Request, res: Response) => {
   async (req: Request, res: Response) => {
     if (!req.user) {
       res.status(401).json({ message: "Unauthorized" });
