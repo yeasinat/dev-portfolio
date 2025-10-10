@@ -76,7 +76,6 @@ export const signout = catchAsync(
     });
 
     res.status(200).json({ success: true, message: "Successfully signed out" });
-    res.status(200).json({ success: true, message: "Successfully signed out" });
   }
 );
 
